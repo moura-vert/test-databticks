@@ -7,6 +7,7 @@ from databricks.sdk.core import Config
 from fastapi import FastAPI, Query
 from typing import Dict, List
 
+DATABRICKS_WAREHOUSE_ID = os.environ.get("DATABRICKS_WAREHOUSE_ID") or None
 
 app = FastAPI(
     title="FastAPI & Databricks Apps",
@@ -14,11 +15,7 @@ app = FastAPI(
     version="1.0.0",
 )
 
-DATABRICKS_WAREHOUSE_ID = os.environ.get("DATABRICKS_WAREHOUSE_ID") or None
-
-app = FastAPI()
 databricks_cfg = Config()
-
 
 def get_connection(warehouse_id: str):
     http_path = f"/sql/1.0/warehouses/{DATABRICKS_WAREHOUSE_ID}"

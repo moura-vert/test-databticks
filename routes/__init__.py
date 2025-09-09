@@ -1,11 +1,10 @@
-from fastapi import APIRouter
-
-# Import routers from versioned packages
-
+import os
 from fastapi import APIRouter
 from fastapi.responses import JSONResponse
 from .v1 import router as v1_router
 
+
+assert os.getenv('DATABRICKS_WAREHOUSE_ID'), "DATABRICKS_WAREHOUSE_ID must be set in app.yaml."
 
 api_router = APIRouter()
 

@@ -41,7 +41,7 @@ def query(sql_query: str, warehouse_id: str, as_dict: bool = True) -> List[Dict]
 
 @app.get("/api/v1/table")
 def table(
-    sql_query: str = Query("SELECT * FROM samples.nyctaxi.trips LIMIT 5", description="SQL query to execute"),
+    sql_query: str = Query("SELECT * FROM data_vertc_stg.lastros.silver_preco_aquisicao_contrato_calculado limit 10", description="SQL query to execute"),
 ):
     results = None
     try:

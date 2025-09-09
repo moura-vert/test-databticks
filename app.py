@@ -4,6 +4,8 @@ from routes import api_router
 import os
 from databricks import sql
 from databricks.sdk.core import Config
+from fastapi import FastAPI, Query
+from typing import Dict, List
 
 
 app = FastAPI(
@@ -11,14 +13,6 @@ app = FastAPI(
     description="A simple FastAPI application example for Databricks Apps runtime",
     version="1.0.0",
 )
-
-import os
-from typing import Dict, List
-
-from fastapi import FastAPI, Query
-
-from databricks import sql
-from databricks.sdk.core import Config
 
 DATABRICKS_WAREHOUSE_ID = os.environ.get("DATABRICKS_WAREHOUSE_ID") or None
 

@@ -55,15 +55,20 @@ SECRET_KEY = os.getenv("SECRET_KEY", "um_secret_key_seguro")
 
 def get_service_url(request: Request) -> str:
     """Constrói a SERVICE_URL dinamicamente baseada na requisição atual"""
-    # Usa variável de ambiente se definida, senão constrói dinamicamente
+    # Usa DATABRICKS_APP_URL se estiver disponível (ambiente Databricks Apps)
+    databricks_url = os.getenv("DATABRICKS_APP_URL")
+    if databricks_url:
+        return f"{databricks_url}/cas/callback"
+    
+    # Usa SERVICE_URL customizada se definida
     base_url = os.getenv("SERVICE_URL")
     if base_url:
         return base_url + "/cas/callback"
     
-    # Constrói URL automaticamente baseada na requisição
+    # Constrói URL automaticamente baseada na requisição (desenvolvimento)
+    host = request.headers.get("host", request.url.hostname)
     scheme = request.url.scheme
-    hostname = request.headers.get("host", request.url.hostname)
-    return f"{scheme}://{hostname}/cas/callback"
+    return f"{scheme}://{host}/cas/callback"
 
 
 DATABRICKS_WAREHOUSE_ID = os.environ.get("DATABRICKS_WAREHOUSE_ID") or None

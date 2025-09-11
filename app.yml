@@ -3,3 +3,7 @@ command: ["uvicorn", "app:app"]
 env:
   - name: "DATABRICKS_WAREHOUSE_ID"
     valueFrom: "sql-warehouse"
+  - name: "CLIENT_ID"
+    valueFromSecret: "client-id"
+  - name: "CLIENT_SECRET"
+    valueFromSecret: "client-secret"

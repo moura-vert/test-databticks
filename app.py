@@ -53,6 +53,18 @@ app = FastAPI(
 CAS_SERVER = "https://sso.stg.vert-tech.dev/cas"
 SECRET_KEY = os.getenv("SECRET_KEY", "um_secret_key_seguro")
 
+def get_service_url(request: Request) -> str:
+    """Constrói a SERVICE_URL dinamicamente baseada na requisição atual"""
+    # Usa variável de ambiente se definida, senão constrói dinamicamente
+    base_url = os.getenv("SERVICE_URL")
+    if base_url:
+        return base_url + "/cas/callback"
+    
+    # Constrói URL automaticamente baseada na requisição
+    scheme = request.url.scheme
+    hostname = request.headers.get("host", request.url.hostname)
+    return f"{scheme}://{hostname}/cas/callback"
+
 
 DATABRICKS_WAREHOUSE_ID = os.environ.get("DATABRICKS_WAREHOUSE_ID") or None
 
@@ -111,12 +123,10 @@ def table(
     return {"results": results}
 
 
-CAS_SERVER = "https://sso.stg.vert-tech.dev/cas"
-SERVICE_URL = "http://localhost:8000/cas/callback"
-
 @app.get("/login")
-async def login():
-    cas_login_url = f"{CAS_SERVER}/login?service={SERVICE_URL}"
+async def login(request: Request):
+    service_url = get_service_url(request)
+    cas_login_url = f"{CAS_SERVER}/login?service={service_url}"
     return RedirectResponse(cas_login_url)
 
 

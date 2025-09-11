@@ -3,3 +3,6 @@ uvicorn
 databricks-sql-connector
 databricks-sdk
 python-dotenv
+python-jose[cryptography]
+authlib
+httpx
